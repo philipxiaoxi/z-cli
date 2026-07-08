@@ -1,0 +1,50 @@
+{
+  "skill_name": "zspace-coder",
+  "evals": [
+    {
+      "id": 1,
+      "name": "rename-file-from-curl",
+      "prompt": "帮我实现这个请求的功能：\n\n```bash\ncurl 'http://127.0.0.1:13579/v2/file/modify' -X POST \\\n  -H 'Referer: http://127.0.0.1:13579/home/fileManage/myFiles?path=%2Fsata14%2Fmy%2Fdata%2F%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E5%A4%B9' \\\n  --data-raw 'path=%2Fsata14%2Fmy%2Fdata%2F%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E5%A4%B9%2Ftest-rename-dir&newname=test-rename-dir-2'\n```",
+      "expected_output": "实现重命名功能，支持 CLI rename 命令和 MCP rename 工具",
+      "files": [],
+      "assertions": [
+        {
+          "name": "api-function-exists",
+          "description": "API 函数 rename_item 存在于 api/file.py",
+          "assertion_type": "exact_match",
+          "expected": "exists"
+        },
+        {
+          "name": "cli-command-registered",
+          "description": "CLI 命令 rename 已注册到 commands/__init__.py",
+          "assertion_type": "exact_match",
+          "expected": "registered"
+        },
+        {
+          "name": "mcp-tool-registered",
+          "description": "MCP 工具 rename 已注册到 mcp/tools/__init__.py",
+          "assertion_type": "exact_match",
+          "expected": "registered"
+        },
+        {
+          "name": "test-only-allowed-dir",
+          "description": "测试只使用了 /sata14/my/data/测试文件夹",
+          "assertion_type": "exact_match",
+          "expected": "correct-path"
+        },
+        {
+          "name": "cli-test-passes",
+          "description": "CLI rename 命令执行通过",
+          "assertion_type": "exact_match",
+          "expected": "pass"
+        },
+        {
+          "name": "mcp-tool-importable",
+          "description": "MCP 工具可导入",
+          "assertion_type": "exact_match",
+          "expected": "importable"
+        }
+      ]
+    }
+  ]
+}
