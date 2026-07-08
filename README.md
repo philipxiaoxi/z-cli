@@ -63,6 +63,14 @@ zcli pool
 
 开发模式使用 `./dev` 脚本（改源码即生效），生产模式使用 `zcli` 命令。
 
+## 接入 Agent 示例
+
+将 z-cli 的 MCP Server 接入 AI 助手（如 opencode、Claude Code）后，用户可以通过自然语言直接操控 NAS。
+
+下图为自研的 NAS 助手 Agent：
+
+![z-cli 演示](docs/demo.png)
+
 ## CLI 命令参考
 
 | 命令 | 功能 | 示例 |
