@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# 开发模式：改源码后无需重装，直接运行
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+PYTHONPATH="$ROOT/src" exec "$ROOT/.venv/bin/python" -m zspace "$@"
