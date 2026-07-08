@@ -275,3 +275,61 @@ def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) 
     return _resp_or_json(resp, raw)
 
 
+def search_files(
+    name: str,
+    file_path: str,
+    order_by: str = "0",
+    ftype: str = "",
+    is_dir: str = "",
+    min_size: str = "0",
+    max_size: str = "0",
+    start: str = "0",
+    num: str = "30",
+    shared_only: str = "0",
+    show_hidden: str = "0",
+    raw: bool = False,
+) -> str | httpx.Response:
+    """搜索 NAS 上的文件。
+
+    Args:
+        name: 搜索关键词。
+        file_path: 搜索范围路径。
+        order_by: 排序方式 (0=名称, 1=修改时间, 2=大小)。
+        ftype: 文件类型筛选。
+        is_dir: 是否仅目录 (0/1)。
+        min_size: 最小文件大小（字节）。
+        max_size: 最大文件大小（字节）。
+        start: 分页起始偏移。
+        num: 每页条目数。
+        shared_only: 仅搜索共享文件 (0/1)。
+        show_hidden: 是否显示隐藏文件 (0/1)。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认可读 JSON 字符串；raw=True 时返回原始响应。
+    """
+    data = {
+        "name": name,
+        "file_path": file_path,
+        "order_by": order_by,
+        "ftype": ftype,
+        "is_dir": is_dir,
+        "min_size": min_size,
+        "max_size": max_size,
+        "start": start,
+        "num": num,
+        "shared_only": shared_only,
+        "show_hidden": show_hidden,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/file_search/file_search",
+        headers=build_headers(file_path),
+        content=urllib.parse.urlencode(data),
+    )
+    if raw:
+        return resp
+    raw_data = _check_resp(resp)
+    return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
+
+
