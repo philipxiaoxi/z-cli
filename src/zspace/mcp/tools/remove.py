@@ -1,4 +1,4 @@
-"""remove 工具 —— 删除zspace NAS 上的文件或文件夹。"""
+"""remove 工具 —— 删除 zspace NAS 上的文件或文件夹。"""
 
 from ...api.file import delete_item
 from ..base import McpTool
@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class RemoveTool(McpTool):
     name = "delete_item"
-    description = "删除zspace NAS 上的文件或文件夹"
+    description = "删除 zspace NAS 上的文件或文件夹"
     input_schema = {
         "type": "object",
         "properties": {

@@ -1,12 +1,12 @@
 ---
 name: zspace-coder
 description: >
-  将抓包的 curl 请求自动转换为zspace CLI 命令和 MCP 工具的完整功能。
+  将抓包的 curl 请求自动转换为 zspace CLI 命令和 MCP 工具的完整功能。
   当用户提供 curl 命令（来自浏览器开发者工具 Network 面板的请求复制），
   需要解析并生成对应的 API 层函数、CLI 子命令、MCP 工具和字段映射，
   并用 /sata14/my/data/测试文件夹 验证功能是否正常。
   涉及的具体操作包括：文件操作（列表/创建/删除/重命名/移动/上传/下载）、
-  存储池管理、系统信息、用户管理、备份恢复等所有zspace NAS API。
+  存储池管理、系统信息、用户管理、备份恢复等所有 zspace NAS API。
   只要是 curl 命令格式的请求，都应该触发此 skill。
 
   注意：测试时只允许使用 /sata14/my/data/测试文件夹 这个目录，

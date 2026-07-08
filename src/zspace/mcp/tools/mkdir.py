@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class MkdirTool(McpTool):
     name = "create_folder"
-    description = "在zspace NAS 上创建新文件夹"
+    description = "在 zspace NAS 上创建新文件夹"
     input_schema = {
         "type": "object",
         "properties": {

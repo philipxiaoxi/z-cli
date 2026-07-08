@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class ListFilesTool(McpTool):
     name = "list_files"
-    description = "列出zspace NAS 指定目录下的文件与子文件夹"
+    description = "列出 zspace NAS 指定目录下的文件与子文件夹"
     input_schema = {
         "type": "object",
         "properties": {

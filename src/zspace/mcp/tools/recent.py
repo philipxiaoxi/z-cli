@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class ListRecentFilesTool(McpTool):
     name = "list_recent_files"
-    description = "获取zspace NAS 上最近访问的文件列表"
+    description = "获取 zspace NAS 上最近访问的文件列表"
     input_schema = {
         "type": "object",
         "properties": {

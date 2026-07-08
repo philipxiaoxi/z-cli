@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class CopyTool(McpTool):
     name = "copy_item"
-    description = "复制zspace NAS 上的文件或文件夹"
+    description = "复制 zspace NAS 上的文件或文件夹"
     input_schema = {
         "type": "object",
         "properties": {

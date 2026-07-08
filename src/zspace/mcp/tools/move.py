@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class MoveTool(McpTool):
     name = "move_item"
-    description = "移动或重命名zspace NAS 上的文件或文件夹"
+    description = "移动或重命名 zspace NAS 上的文件或文件夹"
     input_schema = {
         "type": "object",
         "properties": {

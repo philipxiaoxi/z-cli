@@ -54,7 +54,7 @@ def main():
     """CLI 入口 —— 解析参数并路由到对应子命令。"""
     parser = argparse.ArgumentParser(
         prog="zcli",
-        description="zspace私有云命令行工具",
+        description="zspace 私有云命令行工具",
     )
     register_all(parser.add_subparsers(dest="command", required=True))
     args = parser.parse_args()

@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class SearchTool(McpTool):
     name = "search_files"
-    description = "在zspace NAS 上搜索文件"
+    description = "在 zspace NAS 上搜索文件"
     input_schema = {
         "type": "object",
         "properties": {

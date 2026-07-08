@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class RenameTool(McpTool):
     name = "rename_item"
-    description = "重命名zspace NAS 上的文件或文件夹"
+    description = "重命名 zspace NAS 上的文件或文件夹"
     input_schema = {
         "type": "object",
         "properties": {

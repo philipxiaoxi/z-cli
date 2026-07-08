@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class PoolTool(McpTool):
     name = "get_pool_info"
-    description = "查看zspace NAS 存储池信息"
+    description = "查看 zspace NAS 存储池信息"
     input_schema = {
         "type": "object",
         "properties": {},

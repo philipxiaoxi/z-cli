@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class CreateFileTool(McpTool):
     name = "create_file"
-    description = "在zspace NAS 上创建文件"
+    description = "在 zspace NAS 上创建文件"
     input_schema = {
         "type": "object",
         "properties": {

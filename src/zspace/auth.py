@@ -1,5 +1,5 @@
 """
-认证模块 —— 从zspace桌面客户端读取登录凭据，
+认证模块 —— 从 zspace 桌面客户端读取登录凭据，
 构建 HTTP 请求所需的 Cookie 和请求头。
 """
 
@@ -8,7 +8,7 @@ import json
 import urllib.parse
 from pathlib import Path
 
-# zspace客户端本地数据目录
+# zspace 客户端本地数据目录
 ZSPACE_DIR = Path.home() / "Library/Application Support/zspace"
 # 集中状态文件 (Vuex 持久化)
 VUEX_PATH = ZSPACE_DIR / "vuex.json"
@@ -34,16 +34,16 @@ def _load_vuex() -> dict:
     if _vuex_cache is not None:
         return _vuex_cache
     if not ZSPACE_DIR.exists():
-        raise AuthError("未找到zspace客户端数据目录，请安装zspace客户端并登录。")
+        raise AuthError("未找到 zspace 客户端数据目录，请安装 zspace 客户端并登录。")
     if not VUEX_PATH.exists():
-        raise AuthError("zspace客户端未登录，请先启动zspace客户端并登录。")
+        raise AuthError("zspace 客户端未登录，请先启动 zspace 客户端并登录。")
     with open(VUEX_PATH) as f:
         _vuex_cache = json.load(f).get("state", {})
     return _vuex_cache
 
 
 def get_base_url() -> str:
-    """获取zspace本地代理的基础 URL。
+    """获取 zspace 本地代理的基础 URL。
 
     优先使用 ZSPACE_HOST 环境变量覆盖（用于跨网络访问），
     否则从 vuex.json 的 app.localPort 读取监听端口。
@@ -124,7 +124,7 @@ def build_cookie_header() -> str:
     )
 
 
-# 固定的 User-Agent，模拟zspace桌面客户端
+# 固定的 User-Agent，模拟 zspace 桌面客户端
 USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -133,7 +133,7 @@ USER_AGENT = (
 
 
 def build_headers(path: str = "") -> dict[str, str]:
-    """构建请求zspace API 所需的标准请求头。
+    """构建请求 zspace API 所需的标准请求头。
 
     包含 Cookie、Content-Type、Referer 和 User-Agent。
     Referer 中的 path 参数会被 URL 编码。

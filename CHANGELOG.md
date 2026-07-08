@@ -22,7 +22,7 @@
 - API 层集中封装 NAS 接口，支持 `raw` 模式返回原始响应
 - CLI 命令基于 `Command` 基类注册模式，新增命令只需添加类引用
 - MCP 工具基于 `McpTool` 基类注册模式，自动暴露给 AI 调用
-- 认证模块从zspace客户端本地凭据自动构建 Cookie
+- 认证模块从 zspace 客户端本地凭据自动构建 Cookie
 - 支持热更新开发（`./dev` 脚本，改源码即生效）
 - 生产安装（`pip install`，`zcli` 命令）
 

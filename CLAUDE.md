@@ -1,4 +1,4 @@
-# zspace-cli
+# z-cli
 
 ## 项目技能
 
