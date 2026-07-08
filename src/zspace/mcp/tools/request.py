@@ -2,8 +2,6 @@
 
 import json
 
-import httpx
-
 from ...client import request
 from ..base import McpTool
 

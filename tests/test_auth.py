@@ -2,7 +2,7 @@
 
 from unittest.mock import patch
 
-from zspace.auth import get_base_url, AuthError
+from zspace.auth import get_base_url
 
 
 class TestGetBaseUrl:

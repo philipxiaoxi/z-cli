@@ -6,7 +6,7 @@ import urllib.parse
 import httpx
 
 from ..auth import build_headers, get_base_url
-from . import _check_resp, _resp_or_json
+from . import _check_resp
 
 
 def get_pool_names(raw: bool = False) -> str | httpx.Response:

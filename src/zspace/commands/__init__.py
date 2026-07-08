@@ -1,23 +1,23 @@
 """命令注册中心 —— CLI 入口 + 所有子命令注册，自动接入 argparse。"""
 
-import sys
 import argparse
+import sys
 
+from ..api import ApiError
 from .base import Command
 from .copy import CopyCommand
 from .create import CreateCommand
 from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
-from .poolname import PoolnameCommand
 from .move import MoveCommand
 from .pool import PoolCommand
+from .poolname import PoolnameCommand
 from .recent import RecentCommand
 from .remove import RemoveCommand
 from .rename import RenameCommand
 from .request import RequestCommand
 from .search import SearchCommand
-from ..api import ApiError
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
