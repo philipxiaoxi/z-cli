@@ -1,34 +1,89 @@
 # ZSpace CLI
 
-zspace私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用方式。
+zspace私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用方式，提供文件管理、存储池查询等 NAS 操作能力。
+
+## 功能特性
+
+- **文件操作** — 列表、创建、重命名、移动、复制、删除（回收站）
+- **目录管理** — 创建文件夹，支持冲突自动重命名
+- **文件搜索** — 按名称/类型/大小/时间搜索，支持分页
+- **存储池查询** — 查看存储池信息和名称映射
+- **最近文件** — 获取最近访问文件列表
+- **通用请求** — 向任意 URL 发送 HTTP 请求
+- **MCP Server** — 通过 Model Context Protocol 暴露所有能力给 AI 助手
+
+## 安装
+
+### 前置条件
+
+- macOS（认证模块依赖zspace桌面客户端）
+- Python >= 3.10
+- zspace桌面客户端已安装并登录
+
+### 安装方式
+
+```bash
+# 创建虚拟环境
+python -m venv .venv
+source .venv/bin/activate
+
+# 安装
+pip install -e .
+
+# 验证
+zcli pool
+```
 
 ## 快速上手
 
 ```bash
-# 热更新模式（开发推荐，改源码即生效）
-./dev pool                              # 查看存储池信息
-./dev poolname                          # 查看存储池名称映射
-./dev list /sata12/my/data              # 列出目录文件
-./dev mkdir /sata12/my/data 新建文件夹   # 创建文件夹
-./dev create /sata12/my/data/文件.txt    # 创建文件
-./dev rename /sata12/my/data/旧名称 新名称
-./dev copy  /sata12/my/data/a /sata12/my/data/b
-./dev move  /sata12/my/data/a /sata12/my/data/sub/
-./dev remove /sata12/my/data/无用文件.txt
-./dev search 关键词                      # 搜索文件
-./dev recent                             # 最近文件
-./dev request get https://api.example.com
-./dev mcp                                # 启动 MCP Server
+# 查看存储池
+./dev pool
+./dev poolname
 
-# 生产安装模式（安装后直接用 zcli 命令）
-.venv/bin/pip install .
-zcli pool
-zcli list /sata12/my/data
+# 文件操作
+./dev list /sata12/my/data
+./dev mkdir /sata12/my/data 新建文件夹
+./dev create /sata12/my/data/文件.txt
+./dev rename /sata12/my/data/旧名称 新名称
+./dev copy /sata12/my/data/a /sata12/my/data/b
+./dev move /sata12/my/data/a /sata12/my/data/sub/
+./dev remove /sata12/my/data/无用文件.txt
+
+# 搜索与最近文件
+./dev search 关键词
+./dev recent
+
+# 通用请求
+./dev request get https://api.example.com
+
+# 启动 MCP Server
+./dev mcp
 ```
+
+开发模式使用 `./dev` 脚本（改源码即生效），生产模式使用 `zcli` 命令。
+
+## CLI 命令参考
+
+| 命令 | 功能 | 示例 |
+|------|------|------|
+| `pool` | 查看存储池信息 | `zcli pool` |
+| `poolname` | 查看存储池名称映射 | `zcli poolname` |
+| `list <path>` | 列出目录文件 | `zcli list /sata12/my/data` |
+| `mkdir <parent> <name>` | 创建文件夹 | `zcli mkdir /sata12/my/data 新建` |
+| `create <path>` | 创建文件 | `zcli create /sata12/my/data/a.txt` |
+| `rename <path> <newname>` | 重命名 | `zcli rename /sata12/my/data/旧 新` |
+| `copy <from> <to>` | 复制 | `zcli copy /sata12/a /sata12/b` |
+| `move <from> <to>` | 移动 | `zcli move /sata12/a /sata12/b/` |
+| `remove <path>` | 删除（回收站） | `zcli remove /sata12/my/data/文件.txt` |
+| `search <keyword>` | 搜索文件 | `zcli search 会议记录` |
+| `recent` | 最近文件 | `zcli recent` |
+| `request <method> <url>` | 通用 HTTP 请求 | `zcli request get https://example.com` |
+| `mcp` | 启动 MCP Server | `zcli mcp` |
 
 ## MCP 配置
 
-在 `opencode.json` 中添加 MCP Server 配置：
+在 `opencode.json` 中配置 MCP Server：
 
 ```json
 {
@@ -42,7 +97,7 @@ zcli list /sata12/my/data
 }
 ```
 
-启动后提供以下 MCP 工具：
+### MCP 工具列表
 
 | 工具 | 功能 |
 |------|------|
@@ -63,43 +118,54 @@ zcli list /sata12/my/data
 
 访问文件路径格式为 `/<pool_name>/my/data`，其中 `pool_name` 是 `pool` 接口返回的 `name` 字段（如 `sata12`、`sata14`），不是 `id` 或系统挂载点。
 
-## 目录结构
+## 环境变量
+
+| 变量 | 说明 |
+|------|------|
+| `ZSPACE_HOST` | 覆盖zspace本地代理地址，用于跨网络访问 |
+
+## 项目结构
 
 ```
 zspace-cli/
-├── .venv/                     # Python 虚拟环境
-├── .claude/                   # Claude 技能配置
-├── CLAUDE.md                  # 项目级 AI 指令
-├── dev                        # 热更新运行脚本
-├── pyproject.toml
-└── src/zspace/
-    ├── __init__.py
-    ├── __main__.py            # python -m zspace 入口
-    ├── auth.py                # 从zspace客户端读取登录凭据
-    ├── cli.py                 # CLI 入口，命令分发
-    ├── client.py              # httpx 封装
-    ├── api/                   # NAS API 层
-    │   ├── fields.py          # 字段映射
-    │   ├── file.py            # 文件操作 API
-    │   ├── pool.py            # 存储池 API
-    │   └── user.py            # 用户相关 API
-    ├── commands/              # CLI 子命令（每个文件一个命令）
-    ├── mcp/                   # MCP 服务器
-    │   ├── __init__.py        # 服务器启动 + 工具路由
-    │   ├── base.py            # McpTool 基类
-    │   └── tools/             # MCP 工具（每个文件一个工具）
+├── .github/workflows/      # CI 配置
+├── .claude/                # Claude 技能配置
+├── src/zspace/
+│   ├── api/                # NAS API 层
+│   │   ├── fields.py       # 字段映射
+│   │   ├── file.py         # 文件操作 API
+│   │   └── pool.py         # 存储池 API
+│   ├── commands/           # CLI 子命令
+│   │   ├── base.py         # Command 基类
+│   │   └── ...             # 每个命令一个文件
+│   ├── mcp/                # MCP 服务器
+│   │   ├── base.py         # McpTool 基类
+│   │   └── tools/          # 每个工具一个文件
+│   ├── auth.py             # 登录凭据读取
+│   └── client.py           # HTTP 客户端封装
+├── tests/                  # 测试
+├── dev                     # 热更新运行脚本
+├── Makefile                # 常用开发命令
+├── CHANGELOG.md            # 变更日志
+└── CONTRIBUTING.md         # 贡献指南
 ```
 
 ## 开发
 
 ```bash
-# 激活虚拟环境
-source .venv/bin/activate
+# 安装开发依赖
+pip install -e ".[dev]"
 
-# 安装依赖
-.venv/bin/pip install -e .
-
-# 直接运行（改源码即生效）
+# 热更新模式（改源码即生效）
 ./dev pool
-./dev mcp
+
+# 代码检查
+make lint
+
+# 运行测试
+make test
 ```
+
+## 许可证
+
+[MIT](LICENSE)

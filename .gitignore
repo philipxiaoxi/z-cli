@@ -5,3 +5,6 @@ __pycache__/
 build/
 dist/
 PRD.md
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/

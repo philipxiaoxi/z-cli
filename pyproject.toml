@@ -1,15 +1,43 @@
 [project]
 name = "zspace"
 version = "0.1.0"
-description = "ZSpace CLI & MCP Server - HTTP request tool"
+description = "zspace私有云命令行工具 — CLI & MCP Server"
+readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
+authors = [
+    {name = "zspace-cli contributors"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Filesystems",
+    "Topic :: Utilities",
+]
+keywords = ["zspace", "nas", "cli", "mcp", "zspace"]
 dependencies = [
     "httpx>=0.27.0",
     "mcp>=1.0.0",
 ]
 
 [project.scripts]
-zcli = "zspace.cli:main"
+zcli = "zspace.commands:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10",
+]
 
 [build-system]
 requires = ["setuptools>=64"]
@@ -17,3 +45,21 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+ignore_missing_imports = true
