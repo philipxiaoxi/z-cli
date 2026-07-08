@@ -83,12 +83,34 @@ zcli pool
 
 ## MCP 配置
 
-在 `opencode.json` 中配置 MCP Server：
+### 推荐方式：pipx 全局安装
+
+```bash
+pipx install -e /path/to/zspace-cli
+```
+
+然后在 `opencode.json` 中配置：
 
 ```json
 {
   "mcp": {
-    "z-cli": {
+    "zspace-cli": {
+      "type": "local",
+      "command": ["zcli", "mcp"],
+      "enabled": true
+    }
+  }
+}
+```
+
+### 备选方式：项目虚拟环境
+
+在 `opencode.json` 中配置：
+
+```json
+{
+  "mcp": {
+    "zspace-cli": {
       "type": "local",
       "command": [".venv/bin/python", "-m", "zspace", "mcp"],
       "enabled": true
@@ -96,6 +118,13 @@ zcli pool
   }
 }
 ```
+
+> **注意**：macOS 可能对 `.venv` 下的文件自动设置隐藏标志，导致 Python 3.8+ 跳过 `__editable__` 的 `.pth` 文件（[CPython #113659](https://github.com/python/cpython/issues/113659)）。如果遇到 `ModuleNotFoundError: No module named 'zspace'` 错误，运行以下命令修复：
+>
+> ```bash
+> xattr -rc .venv
+> chflags -R 0 .venv
+> ```
 
 ### MCP 工具列表
 
