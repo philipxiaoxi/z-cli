@@ -76,6 +76,33 @@ def list_files(
     return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
 
 
+def delete_item(paths: str | list[str], show_hidden: bool = False, raw: bool = False) -> str | httpx.Response:
+    """删除 NAS 上的文件或文件夹（移至回收站）。
+
+    Args:
+        paths: 要删除的文件/文件夹路径，可以是单个路径字符串或路径列表。
+        show_hidden: 是否包含隐藏文件。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    if isinstance(paths, str):
+        paths = [paths]
+    data = {
+        "paths[]": paths,
+        "skip_bin": "0",
+        "show_hidden": "1" if show_hidden else "0",
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/remove",
+        headers=build_headers(paths[0] if paths else ""),
+        content=urllib.parse.urlencode(data, doseq=True),
+    )
+    return _resp_or_json(resp, raw)
+
+
 def rename_item(path: str, newname: str, raw: bool = False) -> str | httpx.Response:
     """重命名 NAS 上的文件或文件夹。
 
@@ -96,6 +123,34 @@ def rename_item(path: str, newname: str, raw: bool = False) -> str | httpx.Respo
         f"{get_base_url()}/v2/file/modify",
         headers=build_headers(path),
         content=urllib.parse.urlencode(data),
+    )
+    return _resp_or_json(resp, raw)
+
+
+def move_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
+    """移动或重命名 NAS 上的文件或文件夹。
+
+    Args:
+        paths: 要移动的文件/文件夹路径，可以是单个路径字符串或路径列表。
+        to: 目标路径，可以是目录路径或新路径。
+        rename: 冲突时是否自动重命名 (0/1)。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    if isinstance(paths, str):
+        paths = [paths]
+    data = {
+        "paths[]": paths,
+        "to": to,
+        "rename": rename,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/move",
+        headers=build_headers(paths[0] if paths else ""),
+        content=urllib.parse.urlencode(data, doseq=True),
     )
     return _resp_or_json(resp, raw)
 
