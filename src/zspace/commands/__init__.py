@@ -8,6 +8,7 @@ from .mcp import McpCommand
 from .mkdir import MkdirCommand
 from .move import MoveCommand
 from .pool import PoolCommand
+from .recent import RecentCommand
 from .remove import RemoveCommand
 from .rename import RenameCommand
 from .request import RequestCommand
@@ -21,6 +22,7 @@ _BUILTINS: list[type[Command]] = [
     MkdirCommand,
     MoveCommand,
     PoolCommand,
+    RecentCommand,
     RemoveCommand,
     RenameCommand,
     RequestCommand,

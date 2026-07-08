@@ -183,6 +183,46 @@ def copy_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = Fa
     return _resp_or_json(resp, raw)
 
 
+def list_recent_files(
+    start: str = "0",
+    num: str = "100",
+    scope: str = "1",
+    show_hidden: str = "0",
+    with_fields: str = "encrypted,encrypt_icon,duration,nshare,ori,ext,height,weight,type,is_sys,dw,labels",
+    raw: bool = False,
+) -> str | httpx.Response:
+    """获取 NAS 上最近访问的文件列表。
+
+    Args:
+        start: 分页起始偏移。
+        num: 每页条目数。
+        scope: 查询范围 (1=最近文件)。
+        show_hidden: 是否显示隐藏文件 (0/1)。
+        with_fields: 返回的额外字段（逗号分隔）。
+        raw: 为 True 时返回 httpx.Response，否则返回格式化 JSON 字符串。
+
+    Returns:
+        str | httpx.Response: 默认可读 JSON 字符串；raw=True 时返回原始响应。
+    """
+    data = {
+        "start": start,
+        "num": num,
+        "scope": scope,
+        "with_fields": with_fields,
+        "show_hidden": show_hidden,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/latest/list",
+        headers=build_headers(""),
+        content=urllib.parse.urlencode(data),
+    )
+    if raw:
+        return resp
+    raw_data = _check_resp(resp)
+    return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
+
+
 def create_file(path: str, rename: str = "0", content: bytes = b"", raw: bool = False) -> str | httpx.Response:
     """在 NAS 上创建文件。
 
