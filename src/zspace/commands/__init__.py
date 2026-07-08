@@ -2,6 +2,7 @@
 
 from .base import Command
 from .copy import CopyCommand
+from .create import CreateCommand
 from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
@@ -14,6 +15,7 @@ from .request import RequestCommand
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
     CopyCommand,
+    CreateCommand,
     ListCommand,
     McpCommand,
     MkdirCommand,

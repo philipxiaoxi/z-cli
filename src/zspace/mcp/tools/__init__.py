@@ -2,6 +2,7 @@
 
 from ..base import McpTool
 from .copy import CopyTool
+from .create import CreateFileTool
 from .list import ListFilesTool
 from .mkdir import MkdirTool
 from .move import MoveTool
@@ -13,6 +14,7 @@ from .request import RequestTool
 # 工具注册表：新增工具只需在此处添加类引用
 _BUILTINS: list[type[McpTool]] = [
     CopyTool,
+    CreateFileTool,
     ListFilesTool,
     MkdirTool,
     MoveTool,

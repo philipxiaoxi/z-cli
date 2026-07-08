@@ -183,6 +183,32 @@ def copy_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = Fa
     return _resp_or_json(resp, raw)
 
 
+def create_file(path: str, rename: str = "0", content: bytes = b"", raw: bool = False) -> str | httpx.Response:
+    """在 NAS 上创建文件。
+
+    Args:
+        path: 文件完整路径。
+        rename: 冲突时是否自动重命名 (0/1)。
+        content: 文件内容（二进制），默认为空。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    parent_path = path.rsplit("/", 1)[0] if "/" in path else ""
+    headers = build_headers(parent_path)
+    headers["Content-Type"] = "application/octet-stream"
+    headers["rename"] = rename
+    headers["path"] = urllib.parse.quote(path, safe="")
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/create",
+        headers=headers,
+        content=content,
+    )
+    return _resp_or_json(resp, raw)
+
+
 def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
     """在 NAS 上创建新文件夹。
 
