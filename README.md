@@ -16,9 +16,9 @@ zspace 私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用
 
 ### 前置条件
 
-- macOS（认证模块依赖 zspace 桌面客户端）
+- macOS（认证模块依赖 zspace 桌面客户端，暂不支持其他系统）
 - Python >= 3.10
-- zspace 桌面客户端已安装并登录
+- zspace 桌面客户端已安装、登录，并保持在后台运行
 
 ### 安装方式
 
