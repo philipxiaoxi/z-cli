@@ -34,18 +34,28 @@ zspace-cli/
 
 ## 上手开发
 
-修改源码后重新安装即可生效：
+### 热更新模式（推荐）
+
+```bash
+./dev request get https://api.example.com/data
+./dev mcp
+```
+
+`./dev` 脚本自动设置 `PYTHONPATH`，修改源码后**无需重装**，直接运行即可。
+
+### 生产安装模式
 
 ```bash
 .venv/bin/pip install . --force-reinstall
+zcli request get https://api.example.com/data
 ```
 
-**三个模块各司其职：**
+> Python 3.14 暂不支持 `pip install -e .`，生产安装需执行完整安装。
+
+### 模块职责
 
 | 模块 | 职责 |
 |------|------|
 | `client.py` | 只做一件事：发 HTTP 请求。被 cli 和 mcp 共同调用 |
 | `cli.py` | 解析终端参数，转发给 client 或启动 mcp server |
 | `mcp_server.py` | 注册 MCP tools，让 LLM 通过 MCP 协议调用请求能力 |
-
-> **注意：** Python 3.14 暂不支持 editable install（`pip install -e .`），修改源码后需执行完整安装。
