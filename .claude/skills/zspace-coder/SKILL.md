@@ -184,6 +184,28 @@ class XxxTool(McpTool):
 **只允许使用 `/sata14/my/data/测试文件夹` 作为测试目录。**
 如果 curl 中使用的是其他路径，必须替换为此目录再测试。
 
+#### 开发者验收方法
+
+实现完成后，向开发者输出完整的 CLI 验收命令步骤，开发者可直接复制执行。
+验收步骤必须包含：前置操作 → 功能验证 → 确认结果 → 清理还原。
+
+**模板：**
+```bash
+# 前置：创建测试数据
+./dev mkdir '/sata14/my/data/测试文件夹' 'test-xxx'
+
+# 功能验证：执行目标操作
+./dev xxx <args>
+
+# 确认结果
+./dev list '/sata14/my/data/测试文件夹'
+
+# 清理：恢复环境
+./dev rename '/sata14/my/data/测试文件夹/test-xxx-result' 'test-xxx'
+```
+
+#### AI 自动化测试
+
 CLI 测试：
 ```bash
 cd /Users/philip/Documents/code/zspace-cli && ./dev <command> <args>
