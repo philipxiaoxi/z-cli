@@ -1,4 +1,4 @@
-# python -m zspace 入口，委托给 cli.main()
-from .cli import main
+# python -m zspace 入口，委托给 commands.main()
+from .commands import main
 
 main()

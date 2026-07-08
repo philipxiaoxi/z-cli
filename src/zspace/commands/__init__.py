@@ -1,4 +1,7 @@
-"""命令注册中心 —— 所有子命令在此注册后自动接入 CLI。"""
+"""命令注册中心 —— CLI 入口 + 所有子命令注册，自动接入 argparse。"""
+
+import sys
+import argparse
 
 from .base import Command
 from .copy import CopyCommand
@@ -14,6 +17,7 @@ from .remove import RemoveCommand
 from .rename import RenameCommand
 from .request import RequestCommand
 from .search import SearchCommand
+from ..api import ApiError
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
@@ -44,3 +48,19 @@ def register_all(subparsers):
         p = subparsers.add_parser(cmd.name, help=cmd.help)
         cmd.register(p)
         p.set_defaults(_handler=cmd.handle)
+
+
+def main():
+    """CLI 入口 —— 解析参数并路由到对应子命令。"""
+    parser = argparse.ArgumentParser(
+        prog="zcli",
+        description="zspace私有云命令行工具",
+    )
+    register_all(parser.add_subparsers(dest="command", required=True))
+    args = parser.parse_args()
+
+    try:
+        args._handler(args)
+    except ApiError as e:
+        print(f"错误 [{e.code}]: {e.msg}", file=sys.stderr)
+        sys.exit(1)
