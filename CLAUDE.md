@@ -6,6 +6,10 @@
 
 当用户提供 curl 格式的请求时，会触发此 skill 引导完整的实现流程：解析 curl → API 函数 → CLI 命令 → MCP 工具 → 测试验证。
 
+## 存储池路径规则
+
+访问存储池文件的路径格式为 `/<pool_name>/my/data`，其中 `pool_name` 是 `pool` 接口返回的 `name` 字段（如 `sata12`、`sata14`），不是 `id` 或系统挂载点 `mnt`。
+
 ## 开发命令
 
 ```bash

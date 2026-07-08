@@ -6,6 +6,7 @@ from .create import CreateCommand
 from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
+from .poolname import PoolnameCommand
 from .move import MoveCommand
 from .pool import PoolCommand
 from .recent import RecentCommand
@@ -22,6 +23,7 @@ _BUILTINS: list[type[Command]] = [
     McpCommand,
     MkdirCommand,
     MoveCommand,
+    PoolnameCommand,
     PoolCommand,
     RecentCommand,
     RemoveCommand,
