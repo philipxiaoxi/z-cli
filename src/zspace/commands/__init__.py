@@ -1,6 +1,7 @@
 """命令注册中心 —— 所有子命令在此注册后自动接入 CLI。"""
 
 from .base import Command
+from .copy import CopyCommand
 from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
@@ -12,6 +13,7 @@ from .request import RequestCommand
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
+    CopyCommand,
     ListCommand,
     McpCommand,
     MkdirCommand,

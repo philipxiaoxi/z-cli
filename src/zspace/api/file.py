@@ -155,6 +155,34 @@ def move_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = Fa
     return _resp_or_json(resp, raw)
 
 
+def copy_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
+    """复制 NAS 上的文件或文件夹。
+
+    Args:
+        paths: 要复制的源路径，可以是单个路径字符串或路径列表。
+        to: 目标路径。
+        rename: 冲突时是否自动重命名 (0/1)。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    if isinstance(paths, str):
+        paths = [paths]
+    data = {
+        "paths[]": paths,
+        "to": to,
+        "rename": rename,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/copy",
+        headers=build_headers(paths[0] if paths else ""),
+        content=urllib.parse.urlencode(data, doseq=True),
+    )
+    return _resp_or_json(resp, raw)
+
+
 def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
     """在 NAS 上创建新文件夹。
 
