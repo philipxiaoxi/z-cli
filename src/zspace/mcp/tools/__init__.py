@@ -4,6 +4,7 @@ from ..base import McpTool
 from .list import ListFilesTool
 from .mkdir import MkdirTool
 from .pool import PoolTool
+from .rename import RenameTool
 from .request import RequestTool
 
 # 工具注册表：新增工具只需在此处添加类引用
@@ -11,6 +12,7 @@ _BUILTINS: list[type[McpTool]] = [
     ListFilesTool,
     MkdirTool,
     PoolTool,
+    RenameTool,
     RequestTool,
 ]
 

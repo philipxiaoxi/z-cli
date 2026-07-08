@@ -5,6 +5,7 @@ from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
 from .pool import PoolCommand
+from .rename import RenameCommand
 from .request import RequestCommand
 
 # 注册表：新增命令只需在此处添加类引用
@@ -13,6 +14,7 @@ _BUILTINS: list[type[Command]] = [
     McpCommand,
     MkdirCommand,
     PoolCommand,
+    RenameCommand,
     RequestCommand,
 ]
 

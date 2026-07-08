@@ -76,6 +76,30 @@ def list_files(
     return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
 
 
+def rename_item(path: str, newname: str, raw: bool = False) -> str | httpx.Response:
+    """重命名 NAS 上的文件或文件夹。
+
+    Args:
+        path: 文件/文件夹的完整路径。
+        newname: 新名称（仅文件名，不包含路径）。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    data = {
+        "path": path,
+        "newname": newname,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/modify",
+        headers=build_headers(path),
+        content=urllib.parse.urlencode(data),
+    )
+    return _resp_or_json(resp, raw)
+
+
 def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
     """在 NAS 上创建新文件夹。
 
@@ -100,3 +124,5 @@ def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) 
         content=urllib.parse.urlencode(data),
     )
     return _resp_or_json(resp, raw)
+
+
