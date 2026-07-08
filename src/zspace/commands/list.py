@@ -1,11 +1,7 @@
 """list 命令 —— 列出 NAS 目录中的文件。"""
 
-import urllib.parse
-
-import httpx
-
-from ..auth import build_headers, get_base_url
-from .base import Command, format_response
+from ..api.file import list_files
+from .base import Command
 
 
 class ListCommand(Command):
@@ -30,20 +26,13 @@ class ListCommand(Command):
         parser.add_argument("--dup", default="0", choices=["0", "1"], help="是否包含重复文件")
 
     def handle(self, args):
-        data = {
-            "start": args.start,
-            "num": args.num,
-            "sortby": args.sortby,
-            "order": args.order,
-            "path": args.path,
-            "with_fields": args.with_fields,
-            "show_hidden": args.show_hidden,
-            "dup": args.dup,
-        }
-        resp = httpx.request(
-            "POST",
-            f"{get_base_url()}/v2/file/list/stream",
-            headers=build_headers(args.path),
-            content=urllib.parse.urlencode(data),
-        )
-        format_response(resp)
+        print(list_files(
+            path=args.path,
+            start=args.start,
+            num=args.num,
+            sortby=args.sortby,
+            order=args.order,
+            with_fields=args.with_fields,
+            show_hidden=args.show_hidden,
+            dup=args.dup,
+        ))

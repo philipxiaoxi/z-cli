@@ -1,9 +1,9 @@
 """命令注册中心 —— 所有子命令在此注册后自动接入 CLI。"""
 
-from .base import Command, format_response
-from .list_cmd import ListCommand
-from .mcp_cmd import McpCommand
-from .request_cmd import RequestCommand
+from .base import Command
+from .list import ListCommand
+from .mcp import McpCommand
+from .request import RequestCommand
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [

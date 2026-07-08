@@ -11,5 +11,5 @@ class McpCommand(Command):
         pass
 
     def handle(self, args):
-        from ..mcp_server import serve
+        from ..mcp import serve
         serve()
