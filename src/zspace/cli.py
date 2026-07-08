@@ -1,7 +1,9 @@
 """CLI 入口 —— 命令注册与分发，不包含具体业务逻辑。"""
 
+import sys
 import argparse
 
+from .api import ApiError
 from .commands import register_all
 
 
@@ -18,8 +20,12 @@ def main():
     # 解析命令行参数，自动路由到对应子命令
     args = parser.parse_args()
 
-    # 执行命令：直接调注册时绑定的 handle 方法，无需 if/elif 判断
-    args._handler(args)
+    try:
+        # 执行命令：直接调注册时绑定的 handle 方法，无需 if/elif 判断
+        args._handler(args)
+    except ApiError as e:
+        print(f"错误 [{e.code}]: {e.msg}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -8,14 +8,14 @@ import httpx
 
 from ..auth import build_headers, get_base_url
 
+from . import _check_resp, _resp_or_json
 from .fields import FILE_LIST
 
 
-def _format_list_resp(resp: httpx.Response) -> str:
-    """将文件列表 API 的缩写字段名映射为可读名称，并转换时间戳。"""
-    raw = resp.json()
+def _format_list(data: list) -> str:
+    """将文件列表的缩写字段名映射为可读名称，并转换时间戳。"""
     out = []
-    for item in raw:
+    for item in data:
         readable = {}
         for short, val in item.items():
             long_name = FILE_LIST.get(short, short)
@@ -70,4 +70,33 @@ def list_files(
         headers=build_headers(path),
         content=urllib.parse.urlencode(data),
     )
-    return resp if raw else _format_list_resp(resp)
+    if raw:
+        return resp
+    raw_data = _check_resp(resp)
+    return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
+
+
+def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) -> str | httpx.Response:
+    """在 NAS 上创建新文件夹。
+
+    Args:
+        parent: 父目录路径。
+        name: 文件夹名称。
+        rename: 冲突时是否自动重命名 (0/1)。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
+    """
+    data = {
+        "parent": parent,
+        "name": name,
+        "rename": rename,
+    }
+    resp = httpx.request(
+        "POST",
+        f"{get_base_url()}/v2/file/newdir",
+        headers=build_headers(parent),
+        content=urllib.parse.urlencode(data),
+    )
+    return _resp_or_json(resp, raw)

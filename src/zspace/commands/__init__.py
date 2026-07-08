@@ -3,12 +3,16 @@
 from .base import Command
 from .list import ListCommand
 from .mcp import McpCommand
+from .mkdir import MkdirCommand
+from .pool import PoolCommand
 from .request import RequestCommand
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
     ListCommand,
     McpCommand,
+    MkdirCommand,
+    PoolCommand,
     RequestCommand,
 ]
 
