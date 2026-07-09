@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.2.0] - 2026-07-09
+
+### 新增
+
+- 文件/文件夹创建（`create`），支持上传内容
+- 文件/文件夹复制（`copy`），支持冲突自动重命名
+- 文件/文件夹移动（`move`），支持冲突自动重命名
+- 文件/文件夹删除（`remove`），移至回收站
+- 文件搜索（`search`），支持多种排序和过滤
+- 最近文件列表（`recent`）
+- 存储池名称映射查看（`poolname`）
+- AI skill 安装/卸载（`skills install` / `skills uninstall`）
+- Windows 平台支持
+
+### 变更
+
+- 项目重命名为 `z-cli`，全部文本统一
+- `cli.py` 合并进 `commands/__init__.py`，与 mcp 目录结构对齐
+- httpx Client 单例复用，搜索接口超时设为 60s
+- `remove` CLI 支持批量路径参数
+- skill 安装路径从 cwd 改为 home 目录
+
+### 移除
+
+- `request` 命令（通用 HTTP 请求模块）
+- `make_request` 功能和 `client.py` 模块
+- MCP 中的 `request` 工具
+
+### 修复
+
+- pyproject.toml 中 `package_data` 改为 `package-data`，兼容新版 setuptools
+
 ## [0.1.0] - 2026-07-08
 
 ### 新增
