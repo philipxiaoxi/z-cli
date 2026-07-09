@@ -5,11 +5,17 @@
 
 import json
 import os
+import sys
 import urllib.parse
 from pathlib import Path
 
 # zspace 客户端本地数据目录
-ZSPACE_DIR = Path.home() / "Library/Application Support/zspace"
+if sys.platform == "win32":
+    ZSPACE_DIR = Path(os.environ["APPDATA"]) / "zspace"
+elif sys.platform == "darwin":
+    ZSPACE_DIR = Path.home() / "Library/Application Support/zspace"
+else:
+    ZSPACE_DIR = Path.home() / ".local/share/zspace"
 # 集中状态文件 (Vuex 持久化)
 VUEX_PATH = ZSPACE_DIR / "vuex.json"
 # 设备配置

@@ -15,7 +15,7 @@ zspace 私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用
 
 ### 前置条件
 
-- macOS（认证模块依赖 zspace 桌面客户端，暂不支持其他系统）
+- **macOS / Windows**（认证模块从 zspace 桌面客户端本地数据目录读取凭据）
 - Python >= 3.10
 - zspace 桌面客户端已安装、登录，并保持在后台运行
 
@@ -24,7 +24,11 @@ zspace 私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用
 ```bash
 # 创建虚拟环境
 python -m venv .venv
+
+# macOS / Linux
 source .venv/bin/activate
+# Windows (PowerShell)
+# .venv\Scripts\Activate.ps1
 
 # 安装
 pip install -e .
