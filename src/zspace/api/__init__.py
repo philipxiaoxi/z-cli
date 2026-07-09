@@ -8,6 +8,8 @@ import json
 
 import httpx
 
+_client = httpx.Client(timeout=30)
+
 
 class ApiError(RuntimeError):
     """API 业务错误（code 非 200）。"""

@@ -7,7 +7,7 @@ import urllib.parse
 import httpx
 
 from ..auth import build_headers, get_base_url
-from . import _check_resp, _resp_or_json
+from . import _check_resp, _client, _resp_or_json
 from .fields import FILE_LIST
 
 
@@ -63,7 +63,7 @@ def list_files(
         "show_hidden": show_hidden,
         "dup": dup,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/list/stream",
         headers=build_headers(path),
@@ -93,7 +93,7 @@ def delete_item(paths: str | list[str], show_hidden: bool = False, raw: bool = F
         "skip_bin": "0",
         "show_hidden": "1" if show_hidden else "0",
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/remove",
         headers=build_headers(paths[0] if paths else ""),
@@ -117,7 +117,7 @@ def rename_item(path: str, newname: str, raw: bool = False) -> str | httpx.Respo
         "path": path,
         "newname": newname,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/modify",
         headers=build_headers(path),
@@ -145,7 +145,7 @@ def move_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = Fa
         "to": to,
         "rename": rename,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/move",
         headers=build_headers(paths[0] if paths else ""),
@@ -173,7 +173,7 @@ def copy_item(paths: str | list[str], to: str, rename: str = "0", raw: bool = Fa
         "to": to,
         "rename": rename,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/copy",
         headers=build_headers(paths[0] if paths else ""),
@@ -210,7 +210,7 @@ def list_recent_files(
         "with_fields": with_fields,
         "show_hidden": show_hidden,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/latest/list",
         headers=build_headers(""),
@@ -239,7 +239,7 @@ def create_file(path: str, rename: str = "0", content: bytes = b"", raw: bool = 
     headers["Content-Type"] = "application/octet-stream"
     headers["rename"] = rename
     headers["path"] = urllib.parse.quote(path, safe="")
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/create",
         headers=headers,
@@ -265,7 +265,7 @@ def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) 
         "name": name,
         "rename": rename,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/v2/file/newdir",
         headers=build_headers(parent),
@@ -320,11 +320,12 @@ def search_files(
         "shared_only": shared_only,
         "show_hidden": show_hidden,
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/file_search/file_search",
         headers=build_headers(file_path),
         content=urllib.parse.urlencode(data),
+        timeout=60,
     )
     if raw:
         return resp

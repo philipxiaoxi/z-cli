@@ -6,7 +6,7 @@ import urllib.parse
 import httpx
 
 from ..auth import build_headers, get_base_url
-from . import _check_resp
+from . import _check_resp, _client
 
 
 def get_pool_names(raw: bool = False) -> str | httpx.Response:
@@ -25,7 +25,7 @@ def get_pool_names(raw: bool = False) -> str | httpx.Response:
     data = {
         "all": "1",
     }
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/auth/user/list",
         headers=build_headers(),

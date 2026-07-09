@@ -3,7 +3,7 @@
 import httpx
 
 from ..auth import build_headers, get_base_url
-from . import _resp_or_json
+from . import _client, _resp_or_json
 
 
 def get_pool_info(raw: bool = False) -> str | httpx.Response:
@@ -15,7 +15,7 @@ def get_pool_info(raw: bool = False) -> str | httpx.Response:
     Returns:
         str | httpx.Response: 默认返回 JSON 字符串；raw=True 时返回原始响应。
     """
-    resp = httpx.request(
+    resp = _client.request(
         "POST",
         f"{get_base_url()}/zspool/info",
         headers=build_headers(),
