@@ -205,7 +205,7 @@ make test
 
 ## 致谢
 
-本项目的构思与想法来源于 [skyzhao1223/zspace-cli](https://github.com/skyzhao1223/zspace-cli)。
+本项目基于 [skyzhao1223/zspace-cli](https://github.com/skyzhao1223/zspace-cli) 的构思与想法，在其基础上补充了一些功能。
 
 ## 许可证
 
