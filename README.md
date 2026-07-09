@@ -9,7 +9,6 @@ zspace 私有云命令行工具，支持 **CLI** 和 **MCP Server** 两种使用
 - **文件搜索** — 按名称/类型/大小/时间搜索，支持分页
 - **存储池查询** — 查看存储池信息和名称映射
 - **最近文件** — 获取最近访问文件列表
-- **通用请求** — 向任意 URL 发送 HTTP 请求
 - **MCP Server** — 通过 Model Context Protocol 暴露所有能力给 AI 助手
 
 ## 安装
@@ -54,9 +53,6 @@ zcli pool
 ./dev search 关键词
 ./dev recent
 
-# 通用请求
-./dev request get https://api.example.com
-
 # 启动 MCP Server
 ./dev mcp
 ```
@@ -86,7 +82,6 @@ zcli pool
 | `remove <path>` | 删除（回收站） | `zcli remove /sata12/my/data/文件.txt` |
 | `search <keyword>` | 搜索文件 | `zcli search 会议记录` |
 | `recent` | 最近文件 | `zcli recent` |
-| `request <method> <url>` | 通用 HTTP 请求 | `zcli request get https://example.com` |
 | `mcp` | 启动 MCP Server | `zcli mcp` |
 
 ## MCP 配置
@@ -149,7 +144,6 @@ pipx install -e /path/to/zspace-cli
 | `move_item` | 移动 |
 | `search_files` | 搜索文件 |
 | `list_recent_files` | 最近文件 |
-| `make_request` | 通用 HTTP 请求 |
 
 ## 存储池路径规则
 
@@ -179,7 +173,6 @@ z-cli/
 │   │   ├── base.py         # McpTool 基类
 │   │   └── tools/          # 每个工具一个文件
 │   ├── auth.py             # 登录凭据读取
-│   └── client.py           # HTTP 客户端封装
 ├── tests/                  # 测试
 ├── dev                     # 热更新运行脚本
 ├── Makefile                # 常用开发命令

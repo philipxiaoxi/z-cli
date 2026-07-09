@@ -16,7 +16,6 @@ from .poolname import PoolnameCommand
 from .recent import RecentCommand
 from .remove import RemoveCommand
 from .rename import RenameCommand
-from .request import RequestCommand
 from .search import SearchCommand
 
 # 注册表：新增命令只需在此处添加类引用
@@ -32,7 +31,6 @@ _BUILTINS: list[type[Command]] = [
     RecentCommand,
     RemoveCommand,
     RenameCommand,
-    RequestCommand,
     SearchCommand,
 ]
 
