@@ -6,11 +6,17 @@ from pathlib import Path
 
 from .base import Command
 
-AGENT_PATHS: dict[str, str] = {
-    "opencode": ".opencode/skills",
-    "claude": ".claude/skills",
-    "codex": ".agents/skills",
-}
+AGENTS = ["opencode", "claude", "codex"]
+
+
+def _skills_dir(agent: str) -> Path:
+    home = Path.home()
+    paths = {
+        "opencode": home / ".config" / "opencode" / "skills",
+        "claude": home / ".claude" / "skills",
+        "codex": home / ".agents" / "skills",
+    }
+    return paths[agent]
 
 
 class SkillsCommand(Command):
@@ -26,7 +32,18 @@ class SkillsCommand(Command):
             "--agent",
             action="append",
             required=True,
-            choices=list(AGENT_PATHS),
+            choices=AGENTS,
+            dest="agents",
+            help="目标 AI agent（可多次指定）",
+        )
+
+        p = sub.add_parser("uninstall", help="卸载指定 AI agent 的 skill")
+        p.add_argument("name", help="skill 名称")
+        p.add_argument(
+            "--agent",
+            action="append",
+            required=True,
+            choices=AGENTS,
             dest="agents",
             help="目标 AI agent（可多次指定）",
         )
@@ -34,6 +51,8 @@ class SkillsCommand(Command):
     def handle(self, args):
         if args.skills_action == "install":
             self._install(args)
+        elif args.skills_action == "uninstall":
+            self._uninstall(args)
 
     def _install(self, args):
         src = Path(__file__).resolve().parent.parent / "skills" / args.name
@@ -47,11 +66,10 @@ class SkillsCommand(Command):
                 print(f"可用的 skills: {', '.join(names)}", file=sys.stderr)
             sys.exit(1)
 
-        cwd = Path.cwd()
         installed = []
 
         for agent in args.agents:
-            dst = cwd / AGENT_PATHS[agent] / args.name
+            dst = _skills_dir(agent) / args.name
             if dst.exists():
                 print(f"⚠ {agent}: {dst} 已存在，跳过")
                 continue
@@ -62,3 +80,17 @@ class SkillsCommand(Command):
         if installed:
             print(f"\n已安装到: {', '.join(installed)}")
             print("AI 助手将在下次对话时自动加载该 skill。")
+
+    def _uninstall(self, args):
+        removed = []
+
+        for agent in args.agents:
+            dst = _skills_dir(agent) / args.name
+            if not dst.exists():
+                print(f"⚠ {agent}: {dst} 不存在，跳过")
+                continue
+            shutil.rmtree(dst)
+            removed.append(agent)
+
+        if removed:
+            print(f"\n已从 {', '.join(removed)} 卸载")
