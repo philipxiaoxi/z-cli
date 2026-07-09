@@ -203,6 +203,10 @@ make lint
 make test
 ```
 
+## 致谢
+
+本项目的构思与想法来源于 [skyzhao1223/zspace-cli](https://github.com/skyzhao1223/zspace-cli)。
+
 ## 许可证
 
 [MIT](LICENSE)
