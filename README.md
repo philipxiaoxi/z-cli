@@ -38,6 +38,12 @@ z-cli 是 zspace 私有云 NAS 的命令行工具，支持 **CLI** 和 **MCP Ser
 
 ## 快速上手
 
+### 前置条件
+
+- **macOS / Windows**（认证模块从 zspace 桌面客户端本地数据目录读取凭据）
+- Python >= 3.10
+- zspace 桌面客户端已安装、登录，并保持在后台运行
+
 ### 安装
 
 ```bash
