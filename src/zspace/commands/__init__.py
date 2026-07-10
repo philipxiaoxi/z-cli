@@ -11,6 +11,7 @@ from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
 from .move import MoveCommand
+from .ping import PingCommand
 from .pool import PoolCommand
 from .poolname import PoolnameCommand
 from .read import ReadCommand
@@ -28,6 +29,7 @@ _BUILTINS: list[type[Command]] = [
     McpCommand,
     MkdirCommand,
     MoveCommand,
+    PingCommand,
     PoolnameCommand,
     PoolCommand,
     ReadCommand,

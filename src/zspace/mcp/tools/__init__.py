@@ -6,6 +6,7 @@ from .create import CreateFileTool
 from .list import ListFilesTool
 from .mkdir import MkdirTool
 from .move import MoveTool
+from .ping import PingTool
 from .pool import PoolTool
 from .poolname import PoolnameTool
 from .read import ReadFileTool
@@ -21,6 +22,7 @@ _BUILTINS: list[type[McpTool]] = [
     ListFilesTool,
     MkdirTool,
     MoveTool,
+    PingTool,
     PoolTool,
     PoolnameTool,
     ReadFileTool,
