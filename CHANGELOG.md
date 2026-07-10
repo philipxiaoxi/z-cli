@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0] - 2026-07-10
+
+### 新增
+
+- 读取 NAS 文本文件内容（`read` / `read_file`），支持指定远程端口
+- 网络连通性检测（`ping` / `check_connectivity`），支持自定义超时
+- CLI 新增 `skills` 命令，管理 AI skill 安装/卸载
+
+### 变更
+
+- 全面重写 README，新增 MDN 风格 badge、预览图、MCP 配置指南
+- CLI 文档同步补充新命令和新参数
+
 ## [0.2.0] - 2026-07-09
 
 ### 新增
