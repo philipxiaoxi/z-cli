@@ -8,6 +8,7 @@ from .mkdir import MkdirTool
 from .move import MoveTool
 from .pool import PoolTool
 from .poolname import PoolnameTool
+from .read import ReadFileTool
 from .recent import ListRecentFilesTool
 from .remove import RemoveTool
 from .rename import RenameTool
@@ -22,6 +23,7 @@ _BUILTINS: list[type[McpTool]] = [
     MoveTool,
     PoolTool,
     PoolnameTool,
+    ReadFileTool,
     ListRecentFilesTool,
     RemoveTool,
     RenameTool,

@@ -274,6 +274,52 @@ def create_folder(parent: str, name: str, rename: str = "0", raw: bool = False) 
     return _resp_or_json(resp, raw)
 
 
+_TEXT_EXTENSIONS = frozenset({
+    ".md", ".txt", ".json", ".yaml", ".yml", ".xml", ".csv", ".toml", ".ini",
+    ".cfg", ".conf", ".env", ".gitignore", ".dockerignore", ".editorconfig",
+    ".js", ".ts", ".jsx", ".tsx", ".py", ".rb", ".go", ".rs", ".java", ".c",
+    ".cpp", ".h", ".hpp", ".css", ".scss", ".less", ".html", ".htm", ".vue",
+    ".svelte", ".php", ".sh", ".bash", ".zsh", ".ps1", ".bat", ".sql",
+    ".log", ".svg", ".lock", ".gradle", ".properties", ".makefile",
+})
+
+
+def read_file(path: str, remote_port: str = "8050", raw: bool = False) -> str | httpx.Response:
+    """读取 NAS 上文本文件的内容（仅限文本文件，非文本文件返回错误）。
+
+    Args:
+        path: 文件完整路径。
+        remote_port: NAS web 服务端口，默认 8050。
+        raw: 为 True 时返回 httpx.Response。
+
+    Returns:
+        str | httpx.Response: 默认可读文本内容或错误信息；raw=True 时返回原始响应。
+    """
+    parent_path = path.rsplit("/", 1)[0] if "/" in path else ""
+    params = {
+        "path": path,
+        "remote_port": remote_port,
+        "request_purpose": "5",
+    }
+    resp = _client.request(
+        "GET",
+        f"{get_base_url()}/v2/file/download",
+        headers=build_headers(parent_path),
+        params=params,
+    )
+    if raw:
+        return resp
+
+    if resp.status_code != 200:
+        return f"错误：服务器返回状态码 {resp.status_code}"
+
+    ext = (path.rsplit(".", 1)[-1] if "." in path else "").lower()
+    if ext and f".{ext}" not in _TEXT_EXTENSIONS:
+        return f"错误：不支持读取非文本文件（.{ext}）"
+
+    return resp.text
+
+
 def search_files(
     name: str,
     file_path: str,

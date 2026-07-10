@@ -13,6 +13,7 @@ from .mkdir import MkdirCommand
 from .move import MoveCommand
 from .pool import PoolCommand
 from .poolname import PoolnameCommand
+from .read import ReadCommand
 from .recent import RecentCommand
 from .remove import RemoveCommand
 from .rename import RenameCommand
@@ -29,6 +30,7 @@ _BUILTINS: list[type[Command]] = [
     MoveCommand,
     PoolnameCommand,
     PoolCommand,
+    ReadCommand,
     RecentCommand,
     RemoveCommand,
     RenameCommand,
