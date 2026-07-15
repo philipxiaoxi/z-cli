@@ -7,6 +7,7 @@ from ..api import ApiError
 from .base import Command
 from .copy import CopyCommand
 from .create import CreateCommand
+from .download import DownloadCommand
 from .list import ListCommand
 from .mcp import McpCommand
 from .mkdir import MkdirCommand
@@ -25,6 +26,7 @@ from .skills import SkillsCommand
 _BUILTINS: list[type[Command]] = [
     CopyCommand,
     CreateCommand,
+    DownloadCommand,
     ListCommand,
     McpCommand,
     MkdirCommand,

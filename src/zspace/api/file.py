@@ -7,7 +7,7 @@ import urllib.parse
 import httpx
 
 from ..auth import build_headers, get_base_url
-from . import _check_resp, _client, _resp_or_json
+from . import ApiError, _check_resp, _client, _resp_or_json
 from .fields import FILE_LIST
 
 
@@ -377,5 +377,24 @@ def search_files(
         return resp
     raw_data = _check_resp(resp)
     return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
+
+
+def download_file(path: str) -> bytes:
+    """下载 NAS 上的文件（不限类型），返回二进制内容。
+
+    Args:
+        path: 文件完整路径。
+
+    Returns:
+        bytes: 文件的二进制内容。
+
+    Raises:
+        ApiError: 下载失败时抛出。
+    """
+    resp = read_file(path, raw=True)
+    assert isinstance(resp, httpx.Response)
+    if resp.status_code != 200:
+        raise ApiError(str(resp.status_code), f"下载失败，状态码 {resp.status_code}")
+    return resp.content
 
 
