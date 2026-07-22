@@ -1,5 +1,7 @@
 """命令注册中心 —— CLI 入口 + 所有子命令注册，自动接入 argparse。"""
 
+from __future__ import annotations
+
 import argparse
 import sys
 

@@ -1,5 +1,7 @@
 """MCP 工具注册中心 —— 所有工具在此注册后自动接入 MCP 服务器。"""
 
+from __future__ import annotations
+
 from ..base import McpTool
 from .copy import CopyTool
 from .create import CreateFileTool
