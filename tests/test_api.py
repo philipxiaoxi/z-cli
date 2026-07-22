@@ -6,18 +6,6 @@ from unittest.mock import MagicMock, patch
 import httpx
 import pytest
 
-
-@pytest.fixture(autouse=True)
-def _mock_auth():
-    """所有 API 测试自动 mock 认证模块，避免读取本地 vuex.json。
-
-    除非测试自行覆盖（如 TestPing 系列有独立的 mock）。
-    """
-    with patch("zspace.auth._load_vuex") as mock_load:
-        mock_load.return_value = {"app": {"localPort": 13579}, "user": {"token": "test"}}
-        yield
-
-
 from zspace.api import ApiError, _check_resp, _resp_or_json
 from zspace.api.fields import FILE_LIST
 from zspace.api.file import (
@@ -38,6 +26,16 @@ from zspace.api.ping import ping
 from zspace.api.pool import get_pool_info
 from zspace.api.user import get_pool_names
 
+
+@pytest.fixture(autouse=True)
+def _mock_auth():
+    """所有 API 测试自动 mock 认证模块，避免读取本地 vuex.json。
+
+    除非测试自行覆盖（如 TestPing 系列有独立的 mock）。
+    """
+    with patch("zspace.auth._load_vuex") as mock_load:
+        mock_load.return_value = {"app": {"localPort": 13579}, "user": {"token": "test"}}
+        yield
 
 # =========================================================
 # api/__init__.py
@@ -466,14 +464,14 @@ class TestSearchFiles:
 class TestDownloadFile:
     def test_download_success(self):
         mock_resp = httpx.Response(status_code=200, content=b"binary data")
-        with patch("zspace.api.file._client") as mock_client, \
+        with patch("zspace.api.file._client"), \
                 patch("zspace.api.file.read_file", return_value=mock_resp):
             result = download_file(path="/sata12/my/data/file.bin")
         assert result == b"binary data"
 
     def test_download_error(self):
         mock_resp = httpx.Response(status_code=404)
-        with patch("zspace.api.file._client") as mock_client, \
+        with patch("zspace.api.file._client"), \
                 patch("zspace.api.file.read_file", return_value=mock_resp):
             with pytest.raises(ApiError) as exc:
                 download_file(path="/missing.bin")

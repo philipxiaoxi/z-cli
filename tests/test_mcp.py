@@ -1,6 +1,6 @@
 """MCP 层单元测试 —— 覆盖 mcp/base、mcp/__init__、mcp/tools。"""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import mcp.types as types
 import pytest
@@ -20,7 +20,6 @@ from zspace.mcp.tools.recent import ListRecentFilesTool
 from zspace.mcp.tools.remove import RemoveTool
 from zspace.mcp.tools.rename import RenameTool
 from zspace.mcp.tools.search import SearchTool
-
 
 # =========================================================
 # mcp/base.py
@@ -49,8 +48,9 @@ class TestMcpServer:
     def test_list_tools_returns_all(self):
         with patch("zspace.mcp.get_all_tools") as mock_get:
             mock_get.return_value = [PingTool(), PoolTool()]
-            from zspace.mcp import list_tools
             import anyio
+
+            from zspace.mcp import list_tools
             tools = anyio.run(list_tools)
             names = {t.name for t in tools}
             assert "check_connectivity" in names
@@ -60,8 +60,9 @@ class TestMcpServer:
         with patch("zspace.mcp.get_all_tools") as mock_get:
             tool = PingTool()
             mock_get.return_value = [tool]
-            from zspace.mcp import call_tool
             import anyio
+
+            from zspace.mcp import call_tool
             result = anyio.run(call_tool, "check_connectivity", {"timeout": 3})
             assert len(result) == 1
             assert result[0].type == "text"
@@ -69,8 +70,9 @@ class TestMcpServer:
     def test_call_tool_unknown_raises(self):
         with patch("zspace.mcp.get_all_tools") as mock_get:
             mock_get.return_value = [PingTool()]
-            from zspace.mcp import call_tool
             import anyio
+
+            from zspace.mcp import call_tool
             with pytest.raises(ValueError) as exc:
                 anyio.run(call_tool, "nonexistent", {})
             assert "未知工具" in str(exc.value)

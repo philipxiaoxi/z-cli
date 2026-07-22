@@ -6,9 +6,8 @@ from unittest.mock import MagicMock, patch
 import httpx
 import pytest
 
-from zspace.commands import register_all, main
+from zspace.commands import main, register_all
 from zspace.commands.base import Command, format_response
-
 
 # =========================================================
 # commands/base.py
@@ -128,6 +127,7 @@ class TestPingCommand:
 
     def test_register_adds_argument(self):
         import argparse
+
         from zspace.commands.ping import PingCommand
         cmd = PingCommand()
         parser = argparse.ArgumentParser()
@@ -474,6 +474,7 @@ class TestSearchCommand:
 class TestSkillsCommand:
     def test_register_creates_subparsers(self):
         import argparse
+
         from zspace.commands.skills import SkillsCommand
         cmd = SkillsCommand()
         parser = argparse.ArgumentParser()
@@ -507,8 +508,8 @@ class TestSkillsCommand:
         assert "不存在" in captured.out
 
     def test_install_success(self, capsys):
-        from zspace.commands.skills import SkillsCommand, _skills_dir
-        with patch("zspace.commands.skills.shutil.copytree") as mock_copy, \
+        from zspace.commands.skills import SkillsCommand
+        with patch("zspace.commands.skills.shutil.copytree"), \
                 patch("zspace.commands.skills.Path.is_dir", return_value=True), \
                 patch("zspace.commands.skills.Path.__truediv__") as mock_div:
             mock_div.return_value = __import__("pathlib").Path("/tmp/fake-skill")
@@ -524,7 +525,7 @@ class TestSkillsCommand:
     def test_uninstall_success(self, capsys, tmp_path):
         from zspace.commands.skills import SkillsCommand
         with patch("zspace.commands.skills.Path.exists") as mock_exists, \
-                patch("zspace.commands.skills.shutil.rmtree") as mock_rmtree:
+                patch("zspace.commands.skills.shutil.rmtree"):
             mock_exists.return_value = True
             cmd = SkillsCommand()
             args = __import__("argparse").Namespace(
