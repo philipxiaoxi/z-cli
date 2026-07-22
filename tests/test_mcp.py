@@ -57,7 +57,8 @@ class TestMcpServer:
             assert "get_pool_info" in names
 
     def test_call_tool_routes_correctly(self):
-        with patch("zspace.mcp.get_all_tools") as mock_get:
+        with patch("zspace.mcp.get_all_tools") as mock_get, \
+                patch.object(PingTool, "handle", return_value="pong"):
             tool = PingTool()
             mock_get.return_value = [tool]
             import anyio
