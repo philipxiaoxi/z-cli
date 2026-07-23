@@ -75,6 +75,36 @@ def list_files(
     return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
 
 
+def list_team_files(path: str = "/public", start: str = "0", num: str = "100",
+                    raw: bool = False) -> str | httpx.Response:
+    """列出团队空间（公共空间）目录中的文件。
+
+    Args:
+        path: 团队空间目录路径，默认为 /public。
+        start: 分页起始偏移。
+        num: 每页条目数。
+        raw: 为 True 时返回 httpx.Response，否则返回格式化 JSON 字符串。
+
+    Returns:
+        str | httpx.Response: 默认可读 JSON 字符串；raw=True 时返回原始响应。
+    """
+    data = {
+        "path": path,
+        "start": start,
+        "num": num,
+    }
+    resp = _client.request(
+        "POST",
+        f"{get_base_url()}/v2/public/group/list",
+        headers=build_headers(path),
+        content=urllib.parse.urlencode(data),
+    )
+    if raw:
+        return resp
+    raw_data = _check_resp(resp)
+    return _format_list(raw_data) if isinstance(raw_data, list) else json.dumps(raw_data, indent=2, ensure_ascii=False)
+
+
 def delete_item(paths: str | list[str], show_hidden: bool = False, raw: bool = False) -> str | httpx.Response:
     """删除 NAS 上的文件或文件夹（移至回收站）。
 

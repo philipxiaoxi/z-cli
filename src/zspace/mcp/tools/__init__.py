@@ -16,6 +16,7 @@ from .recent import ListRecentFilesTool
 from .remove import RemoveTool
 from .rename import RenameTool
 from .search import SearchTool
+from .teamlist import ListTeamFilesTool
 
 # 工具注册表：新增工具只需在此处添加类引用
 _BUILTINS: list[type[McpTool]] = [
@@ -32,6 +33,7 @@ _BUILTINS: list[type[McpTool]] = [
     RemoveTool,
     RenameTool,
     SearchTool,
+    ListTeamFilesTool,
 ]
 
 
