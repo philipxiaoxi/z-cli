@@ -1,4 +1,4 @@
-"""recent 命令 —— 获取最近访问的文件列表。"""
+"""recent 命令 —— 获取最近访问的文件列表（支持个人空间和团队空间）。"""
 
 from ..api.file import list_recent_files
 from .base import Command

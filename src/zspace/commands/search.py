@@ -1,4 +1,4 @@
-"""search 命令 —— 搜索 NAS 上的文件。"""
+"""search 命令 —— 搜索 NAS 上的文件（支持个人空间和团队空间）。"""
 
 from ..api.file import search_files
 from .base import Command
@@ -6,11 +6,11 @@ from .base import Command
 
 class SearchCommand(Command):
     name = "search"
-    help = "搜索 NAS 上的文件"
+    help = "搜索 NAS 上的文件（支持个人空间和团队空间）"
 
     def register(self, parser):
         parser.add_argument("name", help="搜索关键词")
-        parser.add_argument("--path", default="/sata12/my/data", help="搜索范围路径")
+        parser.add_argument("--path", default="/sata12/my/data", help="搜索范围路径（个人空间默认，团队空间传 /sata12/public）")
         parser.add_argument("--order-by", default="0", choices=["0", "1", "2"],
                             help="排序方式 (0=名称, 1=修改时间, 2=大小)")
         parser.add_argument("--ftype", default="", help="文件类型筛选")
