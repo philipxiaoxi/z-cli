@@ -22,7 +22,7 @@ class ListRecentFilesTool(McpTool):
             },
             "scope": {
                 "type": "string",
-                "description": "查询范围（1=最近文件），默认为 1",
+                "description": "查询范围（1=个人空间最近文件, 2=团队空间最近文件），默认为 1",
                 "default": "1",
             },
             "show_hidden": {

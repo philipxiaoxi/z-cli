@@ -11,7 +11,7 @@ class RecentCommand(Command):
     def register(self, parser):
         parser.add_argument("--start", default="0", help="分页起始偏移")
         parser.add_argument("--num", default="100", help="每页条目数")
-        parser.add_argument("--scope", default="1", choices=["1"], help="查询范围")
+        parser.add_argument("--scope", default="1", choices=["1", "2"], help="查询范围（1=个人空间, 2=团队空间）")
         parser.add_argument("--show-hidden", default="0", choices=["0", "1"], help="是否显示隐藏文件")
 
     def handle(self, args):
