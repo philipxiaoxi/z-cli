@@ -1,4 +1,4 @@
-"""create 工具 —— AI 调用以在 NAS 上创建文件。"""
+"""create 工具 —— AI 调用以在 NAS 上创建文件，支持个人空间和团队空间。"""
 
 from ...api.file import create_file
 from ..base import McpTool
@@ -6,13 +6,13 @@ from ..base import McpTool
 
 class CreateFileTool(McpTool):
     name = "create_file"
-    description = "在 zspace NAS 上创建文件"
+    description = "在 zspace NAS 上创建文件，同时支持个人空间（/sata12/my/data）和团队空间（/sata12/public）路径"
     input_schema = {
         "type": "object",
         "properties": {
             "path": {
                 "type": "string",
-                "description": "文件完整路径",
+                "description": "文件完整路径，支持个人空间和团队空间路径",
             },
             "rename": {
                 "type": "string",

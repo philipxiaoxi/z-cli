@@ -1,4 +1,4 @@
-"""search 工具 —— AI 调用以搜索 NAS 上的文件。"""
+"""search 工具 —— AI 调用以搜索 NAS 上的文件，支持个人空间和团队空间。"""
 
 from ...api.file import search_files
 from ..base import McpTool
@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class SearchTool(McpTool):
     name = "search_files"
-    description = "在 zspace NAS 上搜索文件"
+    description = "在 zspace NAS 上搜索文件，同时支持个人空间（/sata12/my/data）和团队空间（/sata12/public）路径"
     input_schema = {
         "type": "object",
         "properties": {
@@ -16,7 +16,7 @@ class SearchTool(McpTool):
             },
             "file_path": {
                 "type": "string",
-                "description": "搜索范围路径，如 /sata12/my/data",
+                "description": "搜索范围路径，如 /sata12/my/data，支持个人空间和团队空间",
                 "default": "/sata12/my/data",
             },
             "order_by": {
