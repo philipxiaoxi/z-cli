@@ -17,6 +17,7 @@ from zspace.api.file import (
     download_file,
     list_files,
     list_recent_files,
+    list_team_files,
     move_item,
     read_file,
     rename_item,
@@ -301,6 +302,41 @@ class TestCopyItem:
             mock_client.request.return_value = mock_resp
             result = copy_item(paths="/a.txt", to="/b.txt", raw=True)
             assert result is mock_resp
+
+
+class TestListTeamFiles:
+    def test_team_files_formatted(self):
+        mock_resp = MockResponse([
+            {"name": "团队文件夹", "is_dir": "1", "size": "0"}
+        ])
+        with patch("zspace.api.file._client") as mock_client:
+            mock_client.request.return_value = mock_resp
+            result = list_team_files(path="/public")
+        parsed = json.loads(result)
+        assert parsed[0]["name"] == "团队文件夹"
+
+    def test_team_files_raw(self):
+        mock_resp = MockResponse({"code": "200"})
+        with patch("zspace.api.file._client") as mock_client:
+            mock_client.request.return_value = mock_resp
+            result = list_team_files(path="/public", raw=True)
+            assert result is mock_resp
+
+    def test_team_files_dict_response(self):
+        mock_resp = MockResponse({"code": "200", "msg": "ok"})
+        with patch("zspace.api.file._client") as mock_client:
+            mock_client.request.return_value = mock_resp
+            result = list_team_files(path="/public")
+        parsed = json.loads(result)
+        assert parsed["code"] == "200"
+
+    def test_team_files_default_path(self):
+        mock_resp = MockResponse({"code": "200"})
+        with patch("zspace.api.file._client") as mock_client:
+            mock_client.request.return_value = mock_resp
+            list_team_files()
+        call_kwargs = mock_client.request.call_args[1]
+        assert "path=%2Fpublic" in call_kwargs["content"]
 
 
 class TestListRecentFiles:

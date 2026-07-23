@@ -152,6 +152,14 @@ class TestListFilesTool:
                 sortby="mtime_linux", order="desc", show_hidden="0"
             )
 
+    def test_handle_team_mode(self):
+        with patch("zspace.mcp.tools.list.list_team_files") as mock_team:
+            tool = ListFilesTool()
+            tool.handle({"path": "/sata12/public", "team": True})
+            mock_team.assert_called_once_with(
+                path="/sata12/public", start="0", num="100"
+            )
+
 
 # =========================================================
 # mcp/tools/create.py

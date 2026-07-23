@@ -83,6 +83,7 @@ class TestRegisterAll:
         assert "search" in choices
         assert "mcp" in choices
         assert "skills" in choices
+        assert "teamlist" not in choices  # 已合并到 list --team
 
 
 class TestMain:
@@ -151,7 +152,8 @@ class TestListCommand:
             args = __import__("argparse").Namespace(
                 path="/sata12/my/data", start="0", num="100",
                 sortby="mtime_linux", order="desc",
-                with_fields="ext,type", show_hidden="0", dup="0"
+                with_fields="ext,type", show_hidden="0", dup="0",
+                team=False,
             )
             cmd.handle(args)
             captured = capsys.readouterr()
@@ -164,7 +166,8 @@ class TestListCommand:
             args = __import__("argparse").Namespace(
                 path="/test", start="10", num="50",
                 sortby="name", order="asc",
-                with_fields="ext", show_hidden="1", dup="1"
+                with_fields="ext", show_hidden="1", dup="1",
+                team=False,
             )
             cmd.handle(args)
             mock_list.assert_called_once_with(
@@ -172,6 +175,45 @@ class TestListCommand:
                 sortby="name", order="asc",
                 with_fields="ext", show_hidden="1", dup="1"
             )
+
+    def test_handle_team_mode(self, capsys):
+        with patch("zspace.commands.list.list_team_files") as mock_team:
+            mock_team.return_value = '[{"name": "团队文件"}]'
+            from zspace.commands.list import ListCommand
+            cmd = ListCommand()
+            args = __import__("argparse").Namespace(
+                path="/sata12/public", start="0", num="50",
+                team=True,
+            )
+            cmd.handle(args)
+            captured = capsys.readouterr()
+            assert "团队文件" in captured.out
+
+    def test_handle_team_default_path(self):
+        with patch("zspace.commands.list.list_team_files") as mock_team:
+            from zspace.commands.list import ListCommand
+            cmd = ListCommand()
+            args = __import__("argparse").Namespace(
+                path=None, start="0", num="100",
+                team=True,
+            )
+            cmd.handle(args)
+            mock_team.assert_called_once_with(
+                path="/public", start="0", num="100"
+            )
+
+    def test_handle_non_team_no_path(self):
+        with patch("zspace.commands.list.list_files") as mock_list:
+            from zspace.commands.list import ListCommand
+            cmd = ListCommand()
+            args = __import__("argparse").Namespace(
+                path=None, start="0", num="100",
+                sortby="mtime_linux", order="desc",
+                with_fields="ext", show_hidden="0", dup="0",
+                team=False,
+            )
+            with pytest.raises(SystemExit):
+                cmd.handle(args)
 
 
 # =========================================================
