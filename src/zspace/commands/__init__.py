@@ -23,7 +23,6 @@ from .remove import RemoveCommand
 from .rename import RenameCommand
 from .search import SearchCommand
 from .skills import SkillsCommand
-from .teamlist import TeamListCommand
 
 # 注册表：新增命令只需在此处添加类引用
 _BUILTINS: list[type[Command]] = [
@@ -43,7 +42,6 @@ _BUILTINS: list[type[Command]] = [
     RenameCommand,
     SearchCommand,
     SkillsCommand,
-    TeamListCommand,
 ]
 
 
