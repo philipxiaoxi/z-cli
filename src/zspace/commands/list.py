@@ -11,7 +11,10 @@ class ListCommand(Command):
     help = "列出目录中的文件（支持个人空间和团队空间）"
 
     def register(self, parser):
-        parser.add_argument("path", nargs="?", help="目录路径（个人空间如 /sata12/my/data，团队空间如 /sata12/public；--team 下默认 /public）")
+        parser.add_argument("path", nargs="?", help=(
+            "目录路径（个人空间如 /sata12/my/data，"
+            "团队空间如 /sata12/public；--team 下默认 /public）"
+        ))
         parser.add_argument("--team", action="store_true", help="列出团队空间（公共空间）目录")
         parser.add_argument("--start", default="0", help="分页起始偏移")
         parser.add_argument("--num", default="100", help="每页条目数")

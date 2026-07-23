@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class ReadFileTool(McpTool):
     name = "read_file"
-    description = "读取 zspace NAS 上文本文件的内容（仅限文本文件，非文本文件返回错误），同时支持个人空间（/sata12/my/data）和团队空间（/sata12/public）路径"
+    description = "读取 zspace NAS 上文本文件的内容（仅限文本文件，非文本文件返回错误），支持个人空间和团队空间路径"
     input_schema = {
         "type": "object",
         "properties": {

@@ -6,7 +6,7 @@ from ..base import McpTool
 
 class RenameTool(McpTool):
     name = "rename_item"
-    description = "重命名 zspace NAS 上的文件或文件夹，同时支持个人空间（/sata12/my/data）和团队空间（/sata12/public）路径"
+    description = "重命名 zspace NAS 上的文件或文件夹，支持个人空间和团队空间路径"
     input_schema = {
         "type": "object",
         "properties": {

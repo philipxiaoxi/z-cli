@@ -203,7 +203,7 @@ class TestListCommand:
             )
 
     def test_handle_non_team_no_path(self):
-        with patch("zspace.commands.list.list_files") as mock_list:
+        with patch("zspace.commands.list.list_files"):
             from zspace.commands.list import ListCommand
             cmd = ListCommand()
             args = __import__("argparse").Namespace(

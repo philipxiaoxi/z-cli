@@ -10,7 +10,9 @@ class SearchCommand(Command):
 
     def register(self, parser):
         parser.add_argument("name", help="搜索关键词")
-        parser.add_argument("--path", default="/sata12/my/data", help="搜索范围路径（个人空间默认，团队空间传 /sata12/public）")
+        parser.add_argument("--path", default="/sata12/my/data", help=(
+            "搜索范围路径（个人空间默认，团队空间传 /sata12/public）"
+        ))
         parser.add_argument("--order-by", default="0", choices=["0", "1", "2"],
                             help="排序方式 (0=名称, 1=修改时间, 2=大小)")
         parser.add_argument("--ftype", default="", help="文件类型筛选")
